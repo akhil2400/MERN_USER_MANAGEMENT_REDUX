@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Loader2, User, LogOut, Settings, Shield, Upload } from 'lucide-react';
-import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser,updateUser } from '../../redux/actions/userActions';
-import toast, {Toaster } from "react-hot-toast";
+import React, { useState } from "react";
+import { Loader2, User, LogOut, Settings, Shield, Upload } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser, updateUser } from "../../redux/actions/userActions";
+import toast, { Toaster } from "react-hot-toast";
 // import { setInputValue } from '../../redux/actions/appActions';
 
 const Home = () => {
@@ -10,24 +10,24 @@ const Home = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    bio: '',
-    avatar: null
+    username: "",
+    email: "",
+    bio: "",
+    avatar: null,
   });
 
-  const { user,error } = useSelector((state:any) => state.user);
+  const { user, error } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
   // const inputValue = useSelector((state:any) => state.app.inputValue);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = (e: any) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
+      const reader: any = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result);
-        setFormData(prev => ({ ...prev, avatar: file }));
+        setFormData((prev) => ({ ...prev, avatar: file }));
       };
       reader.readAsDataURL(file);
     }
@@ -38,16 +38,14 @@ const Home = () => {
   };
 
   const handleEditProfile = async (e: React.FormEvent) => {
-
     e.preventDefault();
     setIsLoading(true);
 
-    const valid = await dispatch(updateUser({...formData,id:user.id}));
+    const valid = await dispatch(updateUser({ ...formData, id: user.id }));
 
-    if(!valid){
-      console.log('HEEi')
+    if (!valid) {
       toast.error(error);
-    }else{
+    } else {
       setIsEditModalOpen(false);
     }
     setIsLoading(false);
@@ -57,15 +55,15 @@ const Home = () => {
     setFormData({
       username: user.username,
       email: user.email,
-      bio: user.bio || '',
-      avatar: user.avatar
+      bio: user.bio || "",
+      avatar: user.avatar,
     });
     setPreviewImage(user.image || null);
     setIsEditModalOpen(true);
   };
 
   // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   dispatch(setInputValue(e.target.value)); 
+  //   dispatch(setInputValue(e.target.value));
   // };
 
   if (isLoading) {
@@ -85,9 +83,9 @@ const Home = () => {
               <h1 className="text-xl font-bold text-gray-900">MyApp</h1>
             </div>
             <div className="flex items-center space-x-4">
-              {user.role === 'admin' && (
+              {user.role === "admin" && (
                 <button
-                  onClick={() => window.location.href = '/admin/dashboard'}
+                  onClick={() => (window.location.href = "/admin/dashboard")}
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md flex items-center"
                 >
                   <Shield className="h-4 w-4 mr-2 text-blue-600" />
@@ -129,18 +127,21 @@ const Home = () => {
                 </div>
               )}
             </div>
-            
+
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-gray-900">{user.username}</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {user.username}
+              </h2>
               <p className="text-gray-600">{user.email}</p>
-              <p className="mt-2 text-gray-500">{new Date(user.createdAt).toDateString()}</p>
+              <p className="mt-2 text-gray-500">
+                {new Date(user.createdAt).toDateString()}
+              </p>
               {user.bio && <p className="mt-4 text-gray-700">{user.bio}</p>}
             </div>
           </div>
         </div>
-      
 
-      {/* <div className="mt-8">
+        {/* <div className="mt-8">
       <h3 className="text-xl font-semibold text-gray-900">Update Status:</h3>
       <input
             type="text"
@@ -151,7 +152,6 @@ const Home = () => {
           />
           <p className="mt-2 text-gray-600">Current Status: {inputValue}</p>
       </div> */}
-
       </div>
 
       {isEditModalOpen && (
@@ -186,25 +186,35 @@ const Home = () => {
                     <Upload className="h-4 w-4 text-white" />
                   </label>
                 </div>
-                <p className="text-sm text-gray-500">Click the button to update your profile picture</p>
+                <p className="text-sm text-gray-500">
+                  Click the button to update your profile picture
+                </p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Username</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Username
+                  </label>
                   <input
                     type="text"
                     value={formData.username}
-                    onChange={(e) => setFormData({...formData, username: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, username: e.target.value })
+                    }
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
                   <input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
